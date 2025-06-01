@@ -1,7 +1,29 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import Icon from '@react-native-vector-icons/feather';
+import axios from 'axios';
 
-export function CardCustomer({name, salario, empresa}) {
+export function CardCustomer({name, salario, empresa, id}) {
+  async function deleteUser() {
+    try {
+      console.log('aqui', id);
+      const response = await axios.delete(
+        `https://boasorte.teddybackoffice.com.br/users/${id}`,
+      );
+      console.log('response', response);
+    } catch (error) {}
+  }
+
+  function preDeleteUser(userName) {
+    Alert.alert(
+      'Excluir cliente:',
+      `Tem certeza que deseja excluir o cliente ${userName}?`,
+      [
+        {text: 'Excluir cliente', onPress: () => deleteUser()},
+        {text: 'Cancelar', style: 'cancel'},
+      ],
+      {cancelable: true},
+    );
+  }
   return (
     <View
       style={{
@@ -32,7 +54,7 @@ export function CardCustomer({name, salario, empresa}) {
         <TouchableOpacity onPress={() => {}}>
           <Icon name="edit-2" size={20} color="#000000" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => preDeleteUser(name)}>
           <Icon name="trash-2" size={20} color="red" />
         </TouchableOpacity>
       </View>
