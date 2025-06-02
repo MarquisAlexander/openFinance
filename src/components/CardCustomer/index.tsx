@@ -1,8 +1,20 @@
 import React from 'react';
-import {Alert, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import Icon from '@react-native-vector-icons/feather';
 import axios from 'axios';
 import {formatCurrency} from '../../utils/formatCurrency';
+import {styles} from './styles';
+
+type CardCustomerProps = {
+  name: string;
+  salario: string | number;
+  empresa: string | number;
+  id: string | number;
+  editUser?: () => void;
+  addToSelectedCustomers?: () => void;
+  removeCustomerById?: () => void;
+  isSelectedCustomer?: boolean;
+};
 
 export function CardCustomer({
   name,
@@ -13,7 +25,7 @@ export function CardCustomer({
   addToSelectedCustomers,
   removeCustomerById,
   isSelectedCustomer = false,
-}) {
+}: CardCustomerProps) {
   async function deleteUser() {
     try {
       await axios.delete(`https://boasorte.teddybackoffice.com.br/users/${id}`);
@@ -73,30 +85,3 @@ export function CardCustomer({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 15,
-    borderRadius: 4,
-  },
-  name: {
-    fontSize: 16,
-    fontFamily: 'Inter_24pt-Bold',
-  },
-  detail: {
-    fontSize: 14,
-    fontFamily: 'Inter_24pt-Regular',
-    paddingVertical: 5,
-  },
-  actions: {
-    flexDirection: 'row',
-    width: '100%',
-    paddingTop: 15,
-    borderRadius: 4,
-  },
-});

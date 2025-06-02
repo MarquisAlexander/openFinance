@@ -1,11 +1,11 @@
 import React, {createContext, useState, useContext, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type Customer = {
-  id: number;
+export type Customer = {
+  id: string | number | null;
   name: string;
-  salary: number;
-  companyValuation: number;
+  salary: number | string;
+  companyValuation: number | string;
 };
 
 type CustomerContextType = {

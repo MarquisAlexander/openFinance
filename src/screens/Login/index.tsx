@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {styles} from './styles';
+import {RootStackParamList} from '../../../@types/navigation'; // ajuste o caminho conforme seu projeto
 
-export function Login({navigation}) {
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
+};
+
+export function Login({navigation}: Props) {
   const [username, setUsername] = useState('');
 
   const handleLogin = () => {

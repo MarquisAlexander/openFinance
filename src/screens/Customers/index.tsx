@@ -15,16 +15,30 @@ import BottomSheet, {
 import {useIsFocused} from '@react-navigation/native';
 import {Portal} from '@gorhom/portal';
 import axios from 'axios';
-import {useCustomer} from '../../context/CustomerContext';
+import {Customer, useCustomer} from '../../context/CustomerContext';
 import {CardCustomer} from '../../components/CardCustomer';
 import {styles} from './styles';
 import {formatCurrency} from '../../utils/formatCurrency';
 import {parseCurrency} from '../../utils/parseCurrency';
 
+type RenderInputProps = {
+  label: string;
+  key: string;
+  placeholder: string;
+  isNumeric?: boolean;
+};
+
+const defaultValueNewUser = {
+  id: '',
+  name: '',
+  salary: '',
+  companyValuation: '',
+};
+
 export function Customers() {
   const {customers, setCustomers, selectedCustomer, setSelectedCustomer} =
     useCustomer();
-  const [newUser, setNewUser] = useState({});
+  const [newUser, setNewUser] = useState<Customer>(defaultValueNewUser);
   const [isEditUser, setIsEditUser] = useState(false);
   const [updateCardCustomer, setUpdateCardCustomer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -78,14 +92,14 @@ export function Customers() {
       setLoading(true);
       const body = {
         name: newUser?.name,
-        salary: parseCurrency(newUser?.salary),
-        companyValuation: parseCurrency(newUser?.companyValuation),
+        salary: parseCurrency(String(newUser?.salary)),
+        companyValuation: parseCurrency(String(newUser?.companyValuation)),
       };
 
       await axios.post('https://boasorte.teddybackoffice.com.br/users', body);
       Keyboard.dismiss();
       bottomSheetRef.current?.close();
-      setNewUser({});
+      setNewUser(defaultValueNewUser);
       fetchUsers();
     } catch (error) {
       console.error('Erro ao criar cliente', error);
@@ -94,12 +108,12 @@ export function Customers() {
     }
   };
 
-  function addCustomersToSelected({Customer}) {
-    const newArray = selectedCustomer
-      ? [...selectedCustomer, Customer]
-      : [Customer];
-    if (selectedCustomer?.some(item => item.id === Customer.id)) {
-      console.log('ja existe no array', Customer);
+  function addCustomersToSelected(CustomerToAdd: Customer) {
+    const newArray: Customer[] = selectedCustomer
+      ? [...selectedCustomer, CustomerToAdd]
+      : [CustomerToAdd];
+    if (selectedCustomer?.some(item => item.id === CustomerToAdd.id)) {
+      console.log('ja existe no array', CustomerToAdd);
     } else {
       setSelectedCustomer(newArray);
     }
@@ -113,7 +127,7 @@ export function Customers() {
         companyValuation: parseCurrency(String(newUser?.companyValuation)),
       };
       setLoading(true);
-      const response = await axios.patch(
+      await axios.patch(
         `https://boasorte.teddybackoffice.com.br/users/${newUser?.id}`,
         body,
       );
@@ -126,7 +140,12 @@ export function Customers() {
     }
   }
 
-  const renderInput = (label, key, placeholder, isNumeric = false) => {
+  const renderInput = ({
+    label,
+    key,
+    placeholder,
+    isNumeric = false,
+  }: RenderInputProps) => {
     const handleChange = value => {
       if (isNumeric) {
         const numericValue = value.replace(/\D/g, '');
@@ -159,21 +178,27 @@ export function Customers() {
     );
   };
 
-  const renderPaginationButton = (text, active = false) => (
+  const renderPaginationButton = ({
+    text = 'defaultTitle',
+    active = false,
+  }: {
+    text: string | number;
+    active?: boolean;
+  }) => (
     <TouchableOpacity
       style={[styles.pageButton, active && styles.pageButtonActive]}>
       <Text style={styles.pageText}>{text}</Text>
     </TouchableOpacity>
   );
 
-  function editUserData({user}) {
-    setNewUser({...user});
+  function editUserData({name, salary, companyValuation, id}: Customer) {
+    setNewUser({name, salary, companyValuation, id});
     setIsEditUser(true);
     handleOpen();
   }
 
   function onCloseBottomSheet() {
-    setNewUser({});
+    setNewUser(defaultValueNewUser);
     setIsEditUser(false);
   }
 
@@ -196,12 +221,17 @@ export function Customers() {
               name={item.name}
               salario={item.salary}
               empresa={item.companyValuation}
-              id={item.id}
-              editUser={() => editUserData({user: item})}
-              isSelectedCustomer={updateCardCustomer}
-              addToSelectedCustomers={() =>
-                addCustomersToSelected({Customer: item})
+              id={item.id ?? 0}
+              editUser={() =>
+                editUserData({
+                  name: item.name,
+                  id: item.id,
+                  salary: item.salary,
+                  companyValuation: item.companyValuation,
+                })
               }
+              isSelectedCustomer={updateCardCustomer}
+              addToSelectedCustomers={() => addCustomersToSelected(item)}
             />
           )}
           ItemSeparatorComponent={() => <View style={{height: 20}} />}
@@ -214,13 +244,16 @@ export function Customers() {
               </TouchableOpacity>
 
               <View style={styles.pagination}>
-                {renderPaginationButton(pagination.first)}
-                {renderPaginationButton('...')}
-                {renderPaginationButton(pagination.previous)}
-                {renderPaginationButton(pagination.current, true)}
-                {renderPaginationButton(pagination.next)}
-                {renderPaginationButton('...')}
-                {renderPaginationButton(pagination.last)}
+                {renderPaginationButton({text: pagination.first})}
+                {renderPaginationButton({text: '...'})}
+                {renderPaginationButton({text: pagination.previous})}
+                {renderPaginationButton({
+                  text: pagination.current,
+                  active: true,
+                })}
+                {renderPaginationButton({text: pagination.next})}
+                {renderPaginationButton({text: '...'})}
+                {renderPaginationButton({text: pagination.last})}
               </View>
             </>
           )}
@@ -246,14 +279,23 @@ export function Customers() {
           <BottomSheetView style={styles.sheetContent}>
             <Text style={styles.sheetTitle}>Criar cliente</Text>
 
-            {renderInput('Nome', 'name', 'Digite o nome:')}
-            {renderInput('Salário', 'salary', 'Digite o salário:', true)}
-            {renderInput(
-              'Valor da empresa',
-              'companyValuation',
-              'Digite o valor da empresa:',
-              true,
-            )}
+            {renderInput({
+              label: 'Nome',
+              key: 'name',
+              placeholder: 'Digite o nome:',
+            })}
+            {renderInput({
+              label: 'Salário',
+              key: 'salary',
+              placeholder: 'Digite o salário:',
+              isNumeric: true,
+            })}
+            {renderInput({
+              label: 'Valor da empresa',
+              key: 'companyValuation',
+              placeholder: 'Digite o valor da empresa:',
+              isNumeric: true,
+            })}
 
             <TouchableOpacity
               style={

@@ -20,7 +20,7 @@ export function SelectedCustomers() {
     }
   }, [isFocused]);
 
-  function removeCustomerById(idToRemove) {
+  function removeCustomerById(idToRemove: number) {
     const makeArray =
       selectedCustomer &&
       selectedCustomer.filter(customer => customer.id !== idToRemove);
