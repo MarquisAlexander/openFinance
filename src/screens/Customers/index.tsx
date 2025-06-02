@@ -29,14 +29,14 @@ export function Customers() {
     previous: 0,
     next: 2,
   });
+  const isFormValid =
+    !!newUser?.name && !!newUser?.salary && !!newUser?.companyValuation;
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      console.log('[FOCUSED] Atualizando CardCustomer');
       setUpdateCardCustomer(false);
-      // Aqui você pode atualizar qualquer estado interno ou refazer uma checagem
     }
   }, [isFocused]);
 
@@ -153,13 +153,14 @@ export function Customers() {
     <>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerCount}>2</Text>
+          <Text style={styles.headerCount}>{customers.length}</Text>
           <Text style={styles.headerText}> clientes encontrados:</Text>
         </View>
 
         <FlatList
           data={customers}
           keyExtractor={item => String(item.id)}
+          style={{width: '100%'}}
           renderItem={({item}) => (
             <CardCustomer
               name={item.name}
@@ -216,15 +217,22 @@ export function Customers() {
           )}
 
           <TouchableOpacity
-            style={styles.sheetButton}
-            disabled={loading}
+            style={
+              isFormValid ? styles.sheetButton : styles.inactiveSheetButton
+            }
+            disabled={loading || !isFormValid}
             onPress={() =>
               isEditUser ? handleUpdateUser() : handleCreateUser()
             }>
             {loading ? (
               <ActivityIndicator size={24} color="#fff" />
             ) : (
-              <Text style={styles.sheetButtonText}>
+              <Text
+                style={
+                  isFormValid
+                    ? styles.sheetButtonText
+                    : styles.inactiveSheetButtonText
+                }>
                 {isEditUser ? 'Salvar edição' : 'Criar cliente'}
               </Text>
             )}
