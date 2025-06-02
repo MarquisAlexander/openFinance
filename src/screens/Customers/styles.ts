@@ -90,9 +90,23 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 28,
   },
+  inactiveSheetButton: {
+    backgroundColor: '#878787',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 48,
+    borderRadius: 8,
+    width: '100%',
+    marginBottom: 28,
+  },
   sheetButtonText: {
     fontSize: 18,
     fontWeight: '700',
     color: '#fff',
+  },
+  inactiveSheetButtonText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#7A7A7A',
   },
 });

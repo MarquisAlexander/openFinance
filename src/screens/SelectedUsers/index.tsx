@@ -1,9 +1,10 @@
+import {useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
+
+import {useCustomer} from '../../context/CustomerContext';
 import {CardCustomer} from '../../components/CardCustomer';
 import {styles} from './styles';
-import {useCustomer} from '../../context/CustomerContext';
-import {useIsFocused} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
 
 export function SelectedCustomers() {
   const {selectedCustomer, setSelectedCustomer} = useCustomer();
@@ -18,12 +19,6 @@ export function SelectedCustomers() {
       // Aqui você pode atualizar qualquer estado interno ou refazer uma checagem
     }
   }, [isFocused]);
-  const renderPaginationButton = (text, active = false) => (
-    <TouchableOpacity
-      style={[styles.pageButton, active && styles.pageButtonActive]}>
-      <Text style={styles.pageText}>{text}</Text>
-    </TouchableOpacity>
-  );
 
   function removeCustomerById(idToRemove) {
     const makeArray =
@@ -38,20 +33,21 @@ export function SelectedCustomers() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerCount}>2</Text>
+        <Text style={styles.headerCount}>{selectedCustomer?.length}</Text>
         <Text style={styles.headerText}> Clientes selecionados:</Text>
       </View>
 
       <FlatList
         data={selectedCustomer}
         keyExtractor={item => String(item.id)}
+        style={{width: '100%'}}
         renderItem={({item}) => (
           <CardCustomer
             name={item.name}
             salario={item.salary}
             empresa={item.companyValuation}
             id={item.id}
-            removeCustomerById={() => removeCustomerById({Customer: item})}
+            removeCustomerById={() => removeCustomerById(item.id)}
             isSelectedCustomer={updateCardCustomer}
           />
         )}

@@ -79,6 +79,7 @@ export function Customers() {
       await axios.post('https://boasorte.teddybackoffice.com.br/users', body);
       Keyboard.dismiss();
       bottomSheetRef.current?.close();
+      setNewUser({});
       fetchUsers();
     } catch (error) {
       console.error('Erro ao criar cliente', error);
@@ -119,14 +120,19 @@ export function Customers() {
     }
   }
 
-  const renderInput = (label, key, placeholder) => (
+  const renderInput = (label, key, placeholder, isNumeric = false) => (
     <>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={styles.input}
-        value={isEditUser && `${newUser?.[key]}`}
+        value={
+          newUser?.[key] !== undefined && newUser?.[key] !== null
+            ? String(newUser[key])
+            : ''
+        }
         onChangeText={value => setNewUser({...newUser, [key]: value})}
         placeholder={placeholder}
+        inputMode={isNumeric ? 'numeric' : 'text'} // iOS + Android (melhora teclado)
       />
     </>
   );
@@ -209,11 +215,12 @@ export function Customers() {
           <Text style={styles.sheetTitle}>Criar cliente</Text>
 
           {renderInput('Nome', 'name', 'Digite o nome:')}
-          {renderInput('Salário', 'salary', 'Digite o salário:')}
+          {renderInput('Salário', 'salary', 'Digite o salário:', true)}
           {renderInput(
             'Valor da empresa',
             'companyValuation',
             'Digite o valor da empresa:',
+            true,
           )}
 
           <TouchableOpacity
