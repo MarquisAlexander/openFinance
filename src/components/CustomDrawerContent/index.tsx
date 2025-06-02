@@ -1,19 +1,46 @@
 import Icon from '@react-native-vector-icons/feather';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {DrawerContentComponentProps} from '@react-navigation/drawer';
+
 import {styles} from './styles';
 import Logo from '../../assets/LogoTeddy.png';
 
-export function CustomDrawerContent({navigation}) {
-  function DrawerItem({iconName, label, onPress}) {
+type DrawerItem = {
+  iconName: string;
+  label: string;
+  onPress: () => void;
+  idScreen?: string;
+};
+
+export function CustomDrawerContent({
+  navigation,
+  state,
+}: DrawerContentComponentProps) {
+  const activeRouteName = state.routeNames[state.index];
+
+  function DrawerItem({iconName, label, onPress, idScreen}: DrawerItem) {
     return (
-      <TouchableOpacity onPress={onPress} style={styles.drawerItem}>
+      <TouchableOpacity
+        onPress={onPress}
+        style={
+          activeRouteName == idScreen
+            ? styles.activatedDrawerItem
+            : styles.drawerItem
+        }>
         <Icon
           name={iconName}
           size={24}
-          color="#141414"
+          color={activeRouteName == idScreen ? '#EE7D46' : '#141414'}
           style={styles.drawerIcon}
         />
-        <Text style={styles.drawerLabel}>{label}</Text>
+        <Text
+          style={
+            activeRouteName == idScreen
+              ? styles.activatedDrawerLabel
+              : styles.drawerLabel
+          }>
+          {label}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -27,17 +54,19 @@ export function CustomDrawerContent({navigation}) {
           <DrawerItem
             iconName="home"
             label="Home"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Login')}
           />
           <DrawerItem
-            iconName="user"
+            iconName="users"
             label="Clientes"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Customers')}
+            idScreen="Customers"
           />
           <DrawerItem
             iconName="users"
             label="Clientes selecionados"
             onPress={() => navigation.navigate('SelectedCustomers')}
+            idScreen="SelectedCustomers"
           />
           <DrawerItem
             iconName="package"

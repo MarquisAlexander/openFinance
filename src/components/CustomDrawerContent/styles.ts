@@ -31,6 +31,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
+  activatedDrawerItem: {
+    flexDirection: 'row',
+    padding: 14,
+    alignItems: 'center',
+    marginBottom: 12,
+    borderRightWidth: 2,
+    borderRightColor: '#EE7D46',
+  },
   drawerIcon: {
     marginRight: 20,
   },
@@ -38,5 +46,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter_24pt-Medium',
     color: '#141414',
+  },
+  activatedDrawerLabel: {
+    fontSize: 16,
+    fontFamily: 'Inter_24pt-Medium',
+    color: '#EE7D46',
   },
 });

@@ -32,7 +32,7 @@ export function MyDrawer() {
         ),
         headerStyle: styles.headerStyle,
       })}>
-      <Drawer.Screen name="Home" component={Customers} />
+      <Drawer.Screen name="Customers" component={Customers} />
       <Drawer.Screen name="SelectedCustomers" component={SelectedCustomers} />
     </Drawer.Navigator>
   );
@@ -40,7 +40,7 @@ export function MyDrawer() {
 
 const styles = StyleSheet.create({
   drawerStyle: {
-    backgroundColor: '#fff',
+    backgroundColor: '#F5F5F5',
     borderTopLeftRadius: 32,
     borderBottomLeftRadius: 32,
   },
