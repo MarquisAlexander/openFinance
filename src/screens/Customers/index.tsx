@@ -44,11 +44,8 @@ export function Customers() {
   const [updateCardCustomer, setUpdateCardCustomer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
-    first: 1,
     current: 1,
-    last: 1,
-    previous: 0,
-    next: 2,
+    total: 1,
   });
   const isFormValid =
     !!newUser?.name && !!newUser?.salary && !!newUser?.companyValuation;
@@ -66,20 +63,23 @@ export function Customers() {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [pagination.current]);
 
   const fetchUsers = async () => {
     try {
       const {data} = await axios.get(
         'https://boasorte.teddybackoffice.com.br/users',
+        {
+          params: {
+            page: pagination.current,
+          },
+        },
       );
       setCustomers(data.clients);
       setPagination(prev => ({
         ...prev,
         current: data.currentPage,
-        last: data.totalPages,
-        previous: data.currentPage - 1,
-        next: data.currentPage + 1,
+        total: data.totalPages,
       }));
     } catch (error) {
       console.error('Erro ao buscar usuários', error);
@@ -187,6 +187,7 @@ export function Customers() {
     active?: boolean;
   }) => (
     <TouchableOpacity
+      onPress={prev => setPagination({...prev, current: text})}
       style={[styles.pageButton, active && styles.pageButtonActive]}>
       <Text style={styles.pageText}>{text}</Text>
     </TouchableOpacity>
@@ -238,16 +239,14 @@ export function Customers() {
             </TouchableOpacity>
 
             <View style={styles.pagination}>
-              {renderPaginationButton({text: pagination.first})}
-              {renderPaginationButton({text: '...'})}
-              {renderPaginationButton({text: pagination.previous})}
-              {renderPaginationButton({
-                text: pagination.current,
-                active: true,
-              })}
-              {renderPaginationButton({text: pagination.next})}
-              {renderPaginationButton({text: '...'})}
-              {renderPaginationButton({text: pagination.last})}
+              {Array.from({length: pagination.total}).map((_, i) => (
+                <>
+                  {renderPaginationButton({
+                    text: i + 1,
+                    active: pagination.current === i + 1,
+                  })}
+                </>
+              ))}
             </View>
           </>
         )}
