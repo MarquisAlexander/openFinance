@@ -2,6 +2,7 @@ import React from 'react';
 import {Alert, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import Icon from '@react-native-vector-icons/feather';
 import axios from 'axios';
+import {formatCurrency} from '../../utils/formatCurrency';
 
 export function CardCustomer({
   name,
@@ -36,8 +37,12 @@ export function CardCustomer({
   return (
     <View style={styles.card}>
       <Text style={styles.name}>{name}</Text>
-      <Text style={styles.detail}>Salário: {salario}</Text>
-      <Text style={styles.detail}>Empresa: {empresa}</Text>
+      <Text style={styles.detail}>
+        Salário: {formatCurrency(String(salario))}
+      </Text>
+      <Text style={styles.detail}>
+        Empresa: {formatCurrency(String(empresa))}
+      </Text>
 
       <View
         style={[

@@ -12,12 +12,14 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import {useIsFocused} from '@react-navigation/native';
 import {Portal} from '@gorhom/portal';
 import axios from 'axios';
 import {useCustomer} from '../../context/CustomerContext';
 import {CardCustomer} from '../../components/CardCustomer';
 import {styles} from './styles';
-import {useIsFocused} from '@react-navigation/native';
+import {formatCurrency} from '../../utils/formatCurrency';
+import {parseCurrency} from '../../utils/parseCurrency';
 
 export function Customers() {
   const {customers, setCustomers, selectedCustomer, setSelectedCustomer} =
@@ -76,8 +78,8 @@ export function Customers() {
       setLoading(true);
       const body = {
         name: newUser?.name,
-        salary: Number(newUser?.salary),
-        companyValuation: Number(newUser?.companyValuation),
+        salary: parseCurrency(newUser?.salary),
+        companyValuation: parseCurrency(newUser?.companyValuation),
       };
 
       await axios.post('https://boasorte.teddybackoffice.com.br/users', body);
@@ -107,8 +109,8 @@ export function Customers() {
     try {
       const body = {
         name: newUser?.name,
-        salary: Number(newUser?.salary),
-        companyValuation: Number(newUser?.companyValuation),
+        salary: parseCurrency(String(newUser?.salary)),
+        companyValuation: parseCurrency(String(newUser?.companyValuation)),
       };
       setLoading(true);
       const response = await axios.patch(
@@ -124,22 +126,38 @@ export function Customers() {
     }
   }
 
-  const renderInput = (label, key, placeholder, isNumeric = false) => (
-    <>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={styles.input}
-        value={
-          newUser?.[key] !== undefined && newUser?.[key] !== null
-            ? String(newUser[key])
-            : ''
+  const renderInput = (label, key, placeholder, isNumeric = false) => {
+    const handleChange = value => {
+      if (isNumeric) {
+        const numericValue = value.replace(/\D/g, '');
+
+        if (newUser[key] !== numericValue) {
+          setNewUser(prev => ({...prev, [key]: numericValue}));
         }
-        onChangeText={value => setNewUser({...newUser, [key]: value})}
-        placeholder={placeholder}
-        inputMode={isNumeric ? 'numeric' : 'text'} // iOS + Android (melhora teclado)
-      />
-    </>
-  );
+      } else {
+        if (newUser[key] !== value) {
+          setNewUser(prev => ({...prev, [key]: value}));
+        }
+      }
+    };
+
+    const displayValue = isNumeric
+      ? formatCurrency(String(newUser?.[key]))
+      : newUser?.[key] ?? '';
+
+    return (
+      <>
+        <Text style={styles.label}>{label}</Text>
+        <TextInput
+          style={styles.input}
+          value={displayValue}
+          onChangeText={handleChange}
+          placeholder={placeholder}
+          keyboardType={isNumeric ? 'numeric' : 'default'}
+        />
+      </>
+    );
+  };
 
   const renderPaginationButton = (text, active = false) => (
     <TouchableOpacity
