@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    marginVertical: 20,
+    marginTop: 20,
     flexDirection: 'row',
   },
   headerCount: {
@@ -18,6 +18,10 @@ export const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     fontWeight: '400',
+  },
+  headerCustomersPerPage: {
+    marginBottom: 20,
+    flexDirection: 'row',
   },
   createButton: {
     borderRadius: 4,
@@ -80,6 +84,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     width: '100%',
     marginBottom: 28,
+    color: '#FFFFFF',
   },
   sheetButton: {
     backgroundColor: '#EB6625',

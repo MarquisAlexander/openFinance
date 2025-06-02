@@ -162,7 +162,9 @@ export function Customers() {
           <Text style={styles.headerCount}>{customers.length}</Text>
           <Text style={styles.headerText}> clientes encontrados:</Text>
         </View>
-
+        <View style={styles.headerCustomersPerPage}>
+          <Text style={styles.headerText}>Clientes por página: 16</Text>
+        </View>
         <FlatList
           data={customers}
           keyExtractor={item => String(item.id)}
