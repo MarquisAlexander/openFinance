@@ -20,6 +20,7 @@ import {CardCustomer} from '../../components/CardCustomer';
 import {styles} from './styles';
 import {formatCurrency} from '../../utils/formatCurrency';
 import {parseCurrency} from '../../utils/parseCurrency';
+import {HeaderFlatList} from '../../components/HeaderFlatList';
 
 type RenderInputProps = {
   label: string;
@@ -204,61 +205,53 @@ export function Customers() {
 
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerCount}>{customers.length}</Text>
-          <Text style={styles.headerText}> clientes encontrados:</Text>
-        </View>
-        <View style={styles.headerCustomersPerPage}>
-          <Text style={styles.headerText}>Clientes por página: 16</Text>
-        </View>
-        <FlatList
-          data={customers}
-          keyExtractor={item => String(item.id)}
-          style={{width: '100%'}}
-          renderItem={({item}) => (
-            <CardCustomer
-              name={item.name}
-              salario={item.salary}
-              empresa={item.companyValuation}
-              id={item.id ?? 0}
-              editUser={() =>
-                editUserData({
-                  name: item.name,
-                  id: item.id,
-                  salary: item.salary,
-                  companyValuation: item.companyValuation,
-                })
-              }
-              isSelectedCustomer={updateCardCustomer}
-              addToSelectedCustomers={() => addCustomersToSelected(item)}
-            />
-          )}
-          ItemSeparatorComponent={() => <View style={{height: 20}} />}
-          ListFooterComponent={() => (
-            <>
-              <TouchableOpacity
-                style={styles.createButton}
-                onPress={handleOpen}>
-                <Text style={styles.createButtonText}>Criar cliente</Text>
-              </TouchableOpacity>
+      <FlatList
+        data={customers}
+        keyExtractor={item => String(item.id)}
+        ListHeaderComponent={() => (
+          <HeaderFlatList totalCustomers={customers.length} />
+        )}
+        style={{paddingHorizontal: 20}}
+        renderItem={({item}) => (
+          <CardCustomer
+            name={item.name}
+            salario={item.salary}
+            empresa={item.companyValuation}
+            id={item.id ?? 0}
+            editUser={() =>
+              editUserData({
+                name: item.name,
+                id: item.id,
+                salary: item.salary,
+                companyValuation: item.companyValuation,
+              })
+            }
+            isSelectedCustomer={updateCardCustomer}
+            addToSelectedCustomers={() => addCustomersToSelected(item)}
+          />
+        )}
+        ItemSeparatorComponent={() => <View style={{height: 20}} />}
+        ListFooterComponent={() => (
+          <>
+            <TouchableOpacity style={styles.createButton} onPress={handleOpen}>
+              <Text style={styles.createButtonText}>Criar cliente</Text>
+            </TouchableOpacity>
 
-              <View style={styles.pagination}>
-                {renderPaginationButton({text: pagination.first})}
-                {renderPaginationButton({text: '...'})}
-                {renderPaginationButton({text: pagination.previous})}
-                {renderPaginationButton({
-                  text: pagination.current,
-                  active: true,
-                })}
-                {renderPaginationButton({text: pagination.next})}
-                {renderPaginationButton({text: '...'})}
-                {renderPaginationButton({text: pagination.last})}
-              </View>
-            </>
-          )}
-        />
-      </View>
+            <View style={styles.pagination}>
+              {renderPaginationButton({text: pagination.first})}
+              {renderPaginationButton({text: '...'})}
+              {renderPaginationButton({text: pagination.previous})}
+              {renderPaginationButton({
+                text: pagination.current,
+                active: true,
+              })}
+              {renderPaginationButton({text: pagination.next})}
+              {renderPaginationButton({text: '...'})}
+              {renderPaginationButton({text: pagination.last})}
+            </View>
+          </>
+        )}
+      />
       <Portal>
         <BottomSheet
           ref={bottomSheetRef}
