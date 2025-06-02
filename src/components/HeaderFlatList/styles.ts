@@ -22,4 +22,17 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     flexDirection: 'row',
   },
+  sheetContent: {
+    flex: 1,
+    paddingHorizontal: 32,
+  },
+  textNumber: {
+    fontFamily: 'Inter_24pt-Regular',
+    fontSize: 24,
+    borderBottomWidth: 2,
+    borderBottomColor: '#F5F5F5',
+    textAlign: 'center',
+    width: '100%',
+    paddingVertical: 5,
+  },
 });
