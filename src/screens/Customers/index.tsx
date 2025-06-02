@@ -8,7 +8,11 @@ import {
   FlatList,
   Keyboard,
 } from 'react-native';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import {Portal} from '@gorhom/portal';
 import axios from 'axios';
 import {useCustomer} from '../../context/CustomerContext';
 import {CardCustomer} from '../../components/CardCustomer';
@@ -41,7 +45,7 @@ export function Customers() {
   }, [isFocused]);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['65%'], []);
+  const snapPoints = useMemo(() => ['60%'], []);
 
   useEffect(() => {
     fetchUsers();
@@ -204,50 +208,59 @@ export function Customers() {
           )}
         />
       </View>
-
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        onClose={() => newUser.name && onCloseBottomSheet()}
-        backgroundStyle={{backgroundColor: '#7A7A7A'}}
-        handleIndicatorStyle={{backgroundColor: '#fff'}}>
-        <BottomSheetView style={styles.sheetContent}>
-          <Text style={styles.sheetTitle}>Criar cliente</Text>
-
-          {renderInput('Nome', 'name', 'Digite o nome:')}
-          {renderInput('Salário', 'salary', 'Digite o salário:', true)}
-          {renderInput(
-            'Valor da empresa',
-            'companyValuation',
-            'Digite o valor da empresa:',
-            true,
+      <Portal>
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={-1}
+          snapPoints={snapPoints}
+          enablePanDownToClose
+          onClose={() => newUser.name && onCloseBottomSheet()}
+          backgroundStyle={{backgroundColor: '#7A7A7A'}}
+          backdropComponent={props => (
+            <BottomSheetBackdrop
+              {...props}
+              disappearsOnIndex={-1}
+              appearsOnIndex={0}
+              opacity={0.2} // Transparência do fundo
+            />
           )}
+          handleIndicatorStyle={{backgroundColor: '#fff'}}>
+          <BottomSheetView style={styles.sheetContent}>
+            <Text style={styles.sheetTitle}>Criar cliente</Text>
 
-          <TouchableOpacity
-            style={
-              isFormValid ? styles.sheetButton : styles.inactiveSheetButton
-            }
-            disabled={loading || !isFormValid}
-            onPress={() =>
-              isEditUser ? handleUpdateUser() : handleCreateUser()
-            }>
-            {loading ? (
-              <ActivityIndicator size={24} color="#fff" />
-            ) : (
-              <Text
-                style={
-                  isFormValid
-                    ? styles.sheetButtonText
-                    : styles.inactiveSheetButtonText
-                }>
-                {isEditUser ? 'Salvar edição' : 'Criar cliente'}
-              </Text>
+            {renderInput('Nome', 'name', 'Digite o nome:')}
+            {renderInput('Salário', 'salary', 'Digite o salário:', true)}
+            {renderInput(
+              'Valor da empresa',
+              'companyValuation',
+              'Digite o valor da empresa:',
+              true,
             )}
-          </TouchableOpacity>
-        </BottomSheetView>
-      </BottomSheet>
+
+            <TouchableOpacity
+              style={
+                isFormValid ? styles.sheetButton : styles.inactiveSheetButton
+              }
+              disabled={loading || !isFormValid}
+              onPress={() =>
+                isEditUser ? handleUpdateUser() : handleCreateUser()
+              }>
+              {loading ? (
+                <ActivityIndicator size={24} color="#fff" />
+              ) : (
+                <Text
+                  style={
+                    isFormValid
+                      ? styles.sheetButtonText
+                      : styles.inactiveSheetButtonText
+                  }>
+                  {isEditUser ? 'Salvar edição' : 'Criar cliente'}
+                </Text>
+              )}
+            </TouchableOpacity>
+          </BottomSheetView>
+        </BottomSheet>
+      </Portal>
     </>
   );
 }
