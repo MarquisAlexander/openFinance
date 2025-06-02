@@ -1,97 +1,103 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<h1 align="center"></h1>
 
-# Getting Started
+<h2 align="center">
+  🚀 Open Finance
+</h2>
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+<p align="center">
+  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-informações">Informações</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-download-do-app">Download do app</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-rodar-o-app-local">Rodar o app local</a>
+</p>
 
-## Step 1: Start Metro
+## Tecnologias
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+Esse projeto foi desenvolvido com as seguintes tecnologias:
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- [React Native](https://facebook.github.io/react-native/)
+- [Async Storage](https://github.com/react-native-async-storage/async-storage)
+- [Jest](https://jestjs.io/pt-BR/)
 
-```sh
-# Using npm
-npm start
+Extras:
 
-# OR using Yarn
-yarn start
+- Main Libs
+  - [Axios](https://axios-http.com/ptbr/docs/intro)
+  - [React Navigation](https://reactnavigation.org/)
+  - [React navite Vector icons](https://github.com/oblador/react-native-vector-icons)
+
+## 💻 Projeto
+
+- Aplicativo React Native para gerenciamento de clientes, usando Context API, AsyncStorage para persistência local e testes unitários com Jest e Testing Library.
+
+## 🤔 Informações
+
+- Pré-requisitos
+  - Node.js (versão recomendada: >=16)
+  - npm
+  - Android Studio / Xcode configurados para emulação (ou dispositivo físico)
+  - React Native CLI instalado globalmente (npm install -g react-native-cli)
+  - Dependências do projeto instaladas
+
+## 📲 Download do app
+
+- **obs** Não foi possível disponibilizar o app nas lojas(google play/app store) por alguns motivos, minha conta para acessar o google play console está desativada, e não tenho fácil acesso ao mac para gerar um build do app para o ios.
+- Você pode baixar o apk [clicando aqui](https://1drv.ms/u/c/1823f16959aaf7cf/ETdaCHv7spRJpdnHbXXKXRwBECieXTYO_DNJWuZ_-lQ-3g?e=9oNUFR).
+
+## 🖼 Layout
+
+|                                                                                                                                                                                                    print                                                                                                                                                                                                     |                                                                                                                                                                                                    print                                                                                                                                                                                                    |                                                                                                                                                                                                           print                                                                                                                                                                                                           |                                                                                                                                                                                                           print                                                                                                                                                                                                           |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| ![login](https://github-production-user-asset-6210df.s3.amazonaws.com/51330232/449961520-39d4a1ee-4dba-4dec-89f1-7e70ccd33642.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250602%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250602T044411Z&X-Amz-Expires=300&X-Amz-Signature=0ad385dedc9bb9db699e98ddb53c44ec92f63b3ae430a374e5f0fe3e9b1c34f7&X-Amz-SignedHeaders=host) | ![menu](https://github-production-user-asset-6210df.s3.amazonaws.com/51330232/449960561-c660281f-abaa-4d2c-985c-eb33010f63d4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250602%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250602T044048Z&X-Amz-Expires=300&X-Amz-Signature=adbe77816735a3a1a6b580e2f5f1f318914497f5776bff7386da5c6c5df81348&X-Amz-SignedHeaders=host) | ![selected customers](https://github-production-user-asset-6210df.s3.amazonaws.com/51330232/449961245-47f67107-e7b3-43cf-bc6e-27f49329cce6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250602%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250602T044202Z&X-Amz-Expires=300&X-Amz-Signature=0996236fdee367cacbd3c9b54b09ac0a87735afd2b491f0d80692fb9d0afadba&X-Amz-SignedHeaders=host) | ![bottom sheet modal](https://github-production-user-asset-6210df.s3.amazonaws.com/51330232/449961519-2484c3ca-4213-454b-baa6-ec119488920e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250602%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250602T044327Z&X-Amz-Expires=300&X-Amz-Signature=c9dafcd4f8abaa77628285b6eb2942849ab53756e07eb2f6bc97b0e5568b0a12&X-Amz-SignedHeaders=host) |
+
+## 🧪 Rodar o app local
+
+- ## Instalação
+
+1. Clone este repositório:
+
+```bash
+git clone https://github.com/MarquisAlexander/openFinance.git
+cd openfinance
 ```
 
-## Step 2: Build and run your app
+2. Instale as dependências:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```bash
+yarn install
 ```
 
-### iOS
+3. Instale pods (iOS):
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```bash
+cd ios && pod install && cd ..
 ```
 
-Then, and every time you update your native dependencies, run:
+4. Executando o app
 
-```sh
-bundle exec pod install
+- android
+
+```bash
+npx react-native run-android
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+- ios
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```bash
+npx react-native run-ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Para rodar os testes unitários:
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```bash
+npm test
+```
 
-## Step 3: Modify your app
+- Observações para testes
+  - Ícones e arquivos de fontes estão mockados para evitar erros no Jest
+  - Testes foram feitos com @testing-library/react-native para testar renderização e interação
+  - Para evitar erros com módulos nativos (como react-native-gesture-handler), rode testes em ambiente configurado para React Native
 
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+README feito com ❤️ by **MarquisAlexander**
