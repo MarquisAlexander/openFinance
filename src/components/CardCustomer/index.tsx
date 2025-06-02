@@ -2,7 +2,7 @@ import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import Icon from '@react-native-vector-icons/feather';
 import axios from 'axios';
 
-export function CardCustomer({name, salario, empresa, id}) {
+export function CardCustomer({name, salario, empresa, id, editUser}) {
   async function deleteUser() {
     try {
       console.log('aqui', id);
@@ -24,6 +24,7 @@ export function CardCustomer({name, salario, empresa, id}) {
       {cancelable: true},
     );
   }
+
   return (
     <View
       style={{
@@ -51,7 +52,7 @@ export function CardCustomer({name, salario, empresa, id}) {
         <TouchableOpacity onPress={() => {}}>
           <Icon name="plus" size={20} color="#000000" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => editUser()}>
           <Icon name="edit-2" size={20} color="#000000" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => preDeleteUser(name)}>

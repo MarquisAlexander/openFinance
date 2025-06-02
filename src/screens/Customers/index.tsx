@@ -6,6 +6,7 @@ import {
   TextInput,
   ActivityIndicator,
   FlatList,
+  Keyboard,
 } from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import axios from 'axios';
@@ -15,6 +16,7 @@ import {styles} from './styles';
 export function Customers() {
   const [newUser, setNewUser] = useState({});
   const [data, setData] = useState([]);
+  const [isEditUser, setIsEditUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     first: 1,
@@ -61,6 +63,7 @@ export function Customers() {
       };
 
       await axios.post('https://boasorte.teddybackoffice.com.br/users', body);
+      Keyboard.dismiss();
       bottomSheetRef.current?.close();
       fetchUsers();
     } catch (error) {
@@ -70,11 +73,33 @@ export function Customers() {
     }
   };
 
+  async function handleUpdateUser() {
+    try {
+      const body = {
+        name: newUser?.name,
+        salary: Number(newUser?.salary),
+        companyValuation: Number(newUser?.companyValuation),
+      };
+      setLoading(true);
+      const response = await axios.patch(
+        `https://boasorte.teddybackoffice.com.br/users/${newUser?.id}`,
+        body,
+      );
+      Keyboard.dismiss();
+      bottomSheetRef.current?.close();
+    } catch (error) {
+      console.error('Erro ao editar cliente', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const renderInput = (label, key, placeholder) => (
     <>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={styles.input}
+        value={isEditUser && `${newUser?.[key]}`}
         onChangeText={value => setNewUser({...newUser, [key]: value})}
         placeholder={placeholder}
       />
@@ -87,6 +112,17 @@ export function Customers() {
       <Text style={styles.pageText}>{text}</Text>
     </TouchableOpacity>
   );
+
+  function editUserData({user}) {
+    setNewUser({...user});
+    setIsEditUser(true);
+    handleOpen();
+  }
+
+  function onCloseBottomSheet() {
+    setNewUser({});
+    setIsEditUser(false);
+  }
 
   return (
     <>
@@ -105,6 +141,7 @@ export function Customers() {
               salario={item.salary}
               empresa={item.companyValuation}
               id={item.id}
+              editUser={() => editUserData({user: item})}
             />
           )}
           ItemSeparatorComponent={() => <View style={{height: 20}} />}
@@ -135,6 +172,7 @@ export function Customers() {
         index={-1}
         snapPoints={snapPoints}
         enablePanDownToClose
+        onClose={() => newUser.name && onCloseBottomSheet()}
         backgroundStyle={{backgroundColor: '#7A7A7A'}}
         handleIndicatorStyle={{backgroundColor: '#fff'}}>
         <BottomSheetView style={styles.sheetContent}>
@@ -151,11 +189,15 @@ export function Customers() {
           <TouchableOpacity
             style={styles.sheetButton}
             disabled={loading}
-            onPress={handleCreateUser}>
+            onPress={() =>
+              isEditUser ? handleUpdateUser() : handleCreateUser()
+            }>
             {loading ? (
               <ActivityIndicator size={24} color="#fff" />
             ) : (
-              <Text style={styles.sheetButtonText}>Criar cliente</Text>
+              <Text style={styles.sheetButtonText}>
+                {isEditUser ? 'Salvar edição' : 'Criar cliente'}
+              </Text>
             )}
           </TouchableOpacity>
         </BottomSheetView>
