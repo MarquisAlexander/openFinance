@@ -13,11 +13,11 @@ export const styles = StyleSheet.create({
   },
   headerCount: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'Inter_24pt-Bold',
   },
   headerText: {
     fontSize: 16,
-    fontWeight: '400',
+    fontFamily: 'Inter_24pt-Regular',
   },
   createButton: {
     borderRadius: 4,
@@ -31,8 +31,8 @@ export const styles = StyleSheet.create({
   },
   createButtonText: {
     fontSize: 14,
+    fontFamily: 'Inter_24pt-Bold',
     color: '#EC6724',
-    fontWeight: '700',
   },
   pagination: {
     flexDirection: 'row',
@@ -52,6 +52,6 @@ export const styles = StyleSheet.create({
   },
   pageText: {
     fontSize: 14,
-    fontWeight: '700',
+    fontFamily: 'Inter_24pt-Bold',
   },
 });

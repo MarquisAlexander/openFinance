@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   },
   drawerLabel: {
     fontSize: 16,
+    fontFamily: 'Inter_24pt-Medium',
     color: '#141414',
-    fontWeight: '500',
   },
 });

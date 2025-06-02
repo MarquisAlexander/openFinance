@@ -81,11 +81,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'Inter_24pt-Bold',
   },
   detail: {
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: 'Inter_24pt-Regular',
     paddingVertical: 5,
   },
   actions: {

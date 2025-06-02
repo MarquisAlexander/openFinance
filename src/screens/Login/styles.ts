@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: '400',
+    fontFamily: 'Inter_24pt-Regular',
     lineHeight: 40,
     marginBottom: 40,
     textAlign: 'center',
@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     borderColor: '#D9D9D9',
     borderRadius: 4,
     fontSize: 24,
+    fontFamily: 'Inter_24pt-Regular',
     paddingHorizontal: 20,
     marginBottom: 20,
     backgroundColor: '#FFFFFF',
@@ -36,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'Inter_24pt-Bold',
     color: '#FFFFFF',
   },
 });
