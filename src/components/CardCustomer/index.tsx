@@ -1,24 +1,32 @@
-import {Alert, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {Alert, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import Icon from '@react-native-vector-icons/feather';
 import axios from 'axios';
 
-export function CardCustomer({name, salario, empresa, id, editUser}) {
+export function CardCustomer({
+  name,
+  salario,
+  empresa,
+  id,
+  editUser,
+  addToSelectedCustomers,
+  removeCustomerById,
+  isSelectedCustomer = false,
+}) {
   async function deleteUser() {
     try {
-      console.log('aqui', id);
-      const response = await axios.delete(
-        `https://boasorte.teddybackoffice.com.br/users/${id}`,
-      );
-      console.log('response', response);
-    } catch (error) {}
+      await axios.delete(`https://boasorte.teddybackoffice.com.br/users/${id}`);
+    } catch (error) {
+      console.error('Erro ao excluir cliente', error);
+    }
   }
 
-  function preDeleteUser(userName) {
+  function preDeleteUser() {
     Alert.alert(
       'Excluir cliente:',
-      `Tem certeza que deseja excluir o cliente ${userName}?`,
+      `Tem certeza que deseja excluir o cliente ${name}?`,
       [
-        {text: 'Excluir cliente', onPress: () => deleteUser()},
+        {text: 'Excluir cliente', onPress: deleteUser},
         {text: 'Cancelar', style: 'cancel'},
       ],
       {cancelable: true},
@@ -26,39 +34,64 @@ export function CardCustomer({name, salario, empresa, id, editUser}) {
   }
 
   return (
-    <View
-      style={{
-        backgroundColor: '#FFFFFF',
-        flex: 1,
-        width: '100%',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 15,
-        borderRadius: 4,
-      }}>
-      <Text style={{fontSize: 16, fontWeight: 700}}>{name}</Text>
-      <Text style={{fontSize: 14, fontWeight: 400, paddingVertical: 10}}>
-        Salário: {salario}
-      </Text>
-      <Text style={{fontSize: 14, fontWeight: 400}}>Empresa: {empresa}</Text>
+    <View style={styles.card}>
+      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.detail}>Salário: {salario}</Text>
+      <Text style={styles.detail}>Empresa: {empresa}</Text>
+
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: '100%',
-          paddingTop: 15,
-          borderRadius: 4,
-        }}>
-        <TouchableOpacity onPress={() => {}}>
-          <Icon name="plus" size={20} color="#000000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => editUser()}>
-          <Icon name="edit-2" size={20} color="#000000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => preDeleteUser(name)}>
-          <Icon name="trash-2" size={20} color="red" />
-        </TouchableOpacity>
+        style={[
+          styles.actions,
+          {justifyContent: isSelectedCustomer ? 'flex-end' : 'space-between'},
+        ]}>
+        {!isSelectedCustomer && (
+          <>
+            <TouchableOpacity onPress={addToSelectedCustomers}>
+              <Icon name="plus" size={20} color="#000000" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={editUser}>
+              <Icon name="edit-2" size={20} color="#000000" />
+            </TouchableOpacity>
+          </>
+        )}
+
+        {isSelectedCustomer ? (
+          <TouchableOpacity onPress={removeCustomerById}>
+            <Icon name="minus" size={20} color="red" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={preDeleteUser}>
+            <Icon name="trash-2" size={20} color="red" />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 15,
+    borderRadius: 4,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  detail: {
+    fontSize: 14,
+    fontWeight: '400',
+    paddingVertical: 5,
+  },
+  actions: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingTop: 15,
+    borderRadius: 4,
+  },
+});

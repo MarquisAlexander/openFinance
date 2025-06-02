@@ -10,13 +10,17 @@ import {
 } from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import axios from 'axios';
+import {useCustomer} from '../../context/CustomerContext';
 import {CardCustomer} from '../../components/CardCustomer';
 import {styles} from './styles';
+import {useIsFocused} from '@react-navigation/native';
 
 export function Customers() {
+  const {customers, setCustomers, selectedCustomer, setSelectedCustomer} =
+    useCustomer();
   const [newUser, setNewUser] = useState({});
-  const [data, setData] = useState([]);
   const [isEditUser, setIsEditUser] = useState(false);
+  const [updateCardCustomer, setUpdateCardCustomer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     first: 1,
@@ -25,6 +29,16 @@ export function Customers() {
     previous: 0,
     next: 2,
   });
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('[FOCUSED] Atualizando CardCustomer');
+      setUpdateCardCustomer(false);
+      // Aqui você pode atualizar qualquer estado interno ou refazer uma checagem
+    }
+  }, [isFocused]);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['65%'], []);
@@ -38,7 +52,7 @@ export function Customers() {
       const {data} = await axios.get(
         'https://boasorte.teddybackoffice.com.br/users',
       );
-      setData(data.clients);
+      setCustomers(data.clients);
       setPagination(prev => ({
         ...prev,
         current: data.currentPage,
@@ -72,6 +86,17 @@ export function Customers() {
       setLoading(false);
     }
   };
+
+  function addCustomersToSelected({Customer}) {
+    const newArray = selectedCustomer
+      ? [...selectedCustomer, Customer]
+      : [Customer];
+    if (selectedCustomer?.some(item => item.id === Customer.id)) {
+      console.log('ja existe no array', Customer);
+    } else {
+      setSelectedCustomer(newArray);
+    }
+  }
 
   async function handleUpdateUser() {
     try {
@@ -133,7 +158,7 @@ export function Customers() {
         </View>
 
         <FlatList
-          data={data}
+          data={customers}
           keyExtractor={item => String(item.id)}
           renderItem={({item}) => (
             <CardCustomer
@@ -142,6 +167,10 @@ export function Customers() {
               empresa={item.companyValuation}
               id={item.id}
               editUser={() => editUserData({user: item})}
+              isSelectedCustomer={updateCardCustomer}
+              addToSelectedCustomers={() =>
+                addCustomersToSelected({Customer: item})
+              }
             />
           )}
           ItemSeparatorComponent={() => <View style={{height: 20}} />}

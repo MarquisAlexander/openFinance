@@ -1,11 +1,12 @@
 import React from 'react';
 import {Image, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from '@react-native-vector-icons/Feather';
+import Icon from '@react-native-vector-icons/feather';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import {Customers} from '../screens/Customers';
 import {CustomDrawerContent} from '../components/CustomDrawerContent';
 import Logo from '../assets/LogoTeddy.png';
+import {SelectedCustomers} from '../screens/SelectedUsers';
 export function MyDrawer() {
   const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,7 @@ export function MyDrawer() {
         headerStyle: styles.headerStyle,
       })}>
       <Drawer.Screen name="Home" component={Customers} />
+      <Drawer.Screen name="SelectedCustomers" component={SelectedCustomers} />
     </Drawer.Navigator>
   );
 }

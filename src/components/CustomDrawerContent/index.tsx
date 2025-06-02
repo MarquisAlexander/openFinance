@@ -35,6 +35,11 @@ export function CustomDrawerContent({navigation}) {
             onPress={() => navigation.navigate('Home')}
           />
           <DrawerItem
+            iconName="users"
+            label="Clientes selecionados"
+            onPress={() => navigation.navigate('SelectedCustomers')}
+          />
+          <DrawerItem
             iconName="package"
             label="Produtos"
             onPress={() => navigation.navigate('Home')}
